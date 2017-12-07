@@ -27,22 +27,11 @@ namespace Ej2
         public virtual IList<AccountMovement> Movements { get; set; }
 
         /// <summary>
-        /// Devuelve el balance de la cuenta
+        /// Constructor de la clase
         /// </summary>
-        /// <returns></returns>
-        public double GetBalance()
+        public Account()
         {
-            return Movements.Sum(pMovement => pMovement.Amount);
-        }
-
-        /// <summary>
-        /// Devuelve todos los movimientos de la cuenta
-        /// </summary>
-        /// <param name="pCount"></param>
-        /// <returns></returns>
-        public IEnumerable<AccountMovement> GetAccountMovements(int pCount)
-        {
-            return Movements.OrderBy(pMovement => pMovement.Date).Take(pCount);
+            Movements = new List<AccountMovement>();
         }
     }
 }

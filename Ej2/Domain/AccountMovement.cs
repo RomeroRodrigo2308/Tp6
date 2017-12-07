@@ -22,5 +22,8 @@ namespace Ej2
 
         [Required]
         public double Amount { get; set; }
+
+        [Required]
+        public Account Account { get; set; }
     }
 }

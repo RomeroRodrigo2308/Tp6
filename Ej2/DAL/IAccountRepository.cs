@@ -13,5 +13,7 @@ namespace Ej2
         IEnumerable<Account> GetClientAccounts(int pClientId);
 
         double GetAccountBalance(int pAccountId);
+
+        IList<AccountMovementDTO> GetAccountMovements(int pAccountId);
     }
 }

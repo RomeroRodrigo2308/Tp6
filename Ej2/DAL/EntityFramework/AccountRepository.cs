@@ -44,6 +44,14 @@ namespace Ej2.DAL.EntityFramework
             return query.ToList();
         }
 
+        public IList<AccountMovement> ObtenerMovimientosDeUnaCuenta(int pAccountId)
+        {
+            var query = from p in iDbContext.Set<AccountMovement>()
+                        where p.Account.Id == pAccountId
+                        select p;
+            return query.ToList<AccountMovement>();
+        }
+
         /// <summary>
         /// Devuelve el balance de una Cuenta
         /// </summary>
@@ -51,16 +59,14 @@ namespace Ej2.DAL.EntityFramework
         /// <returns></returns>
         public double GetAccountBalance(int pAccountId)
         {
-            double mBalance = 0;
-            var query = "SELECT Amount FROM accountmovement WHERE(Account_Id = ?pAccountId)";
-            MySqlConnection mConnection = new MySqlConnection("server = localhost; port = 3306; database = Tp6_Ej2.2; uid = root; password = 5kcwphcr");
-            mConnection.Open();
-            MySqlCommand mCommand = new MySqlCommand(query, mConnection);
-            mCommand.Parameters.AddWithValue("?pAccountId", pAccountId);
-            MySqlDataReader mReader = mCommand.ExecuteReader();
-            
-            mConnection.Close();
-            return mBalance;
+            List<AccountMovement> mList = (List<AccountMovement>)ObtenerMovimientosDeUnaCuenta(pAccountId);
+            return mList.Sum<AccountMovement>(p => p.Amount);
+        }
+
+        public IList<AccountMovementDTO> GetAccountMovements(int pAccountId)
+        {
+            List<AccountMovement> mList = (List<AccountMovement>)ObtenerMovimientosDeUnaCuenta(pAccountId);
+            mList.Sort()
         }
     }
 }

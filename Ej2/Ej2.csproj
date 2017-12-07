@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\Comparer\ComparerByDateDesc.cs" />
     <Compile Include="DAL\EntityFramework\AccountRepository.cs" />
     <Compile Include="DAL\EntityFramework\ClientRepository.cs" />
     <Compile Include="DAL\EntityFramework\UnitOfWork.cs" />

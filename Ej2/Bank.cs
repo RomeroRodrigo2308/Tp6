@@ -27,10 +27,10 @@ namespace Ej2
                 {
                     mAccountsDTO.Add(new AccountDTO
                     {
-                        Balance = mAccount.GetBalance(),
+                        Balance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id),
                         Id = mAccount.Id,
                         Name = mAccount.Name,
-                        OverdraftLimit = mAccount.OverdraftLimit
+                        OverdraftLimit = mAccount.OverdraftLimit,
                     });
                     mUnit.Complete();
                 }
@@ -49,7 +49,7 @@ namespace Ej2
             using (UnitOfWork mUnit = new UnitOfWork(new AccountManagerDbContext()))
             {
                 Account mAccount = mUnit.AccountRepository.Get(pAccountId);
-                foreach (AccountMovement mMovement in mAccount.GetAccountMovements(pCantidad))
+                foreach (AccountMovement mMovement in mAccount.GetAccountMovements(pCantidad)) //Cambiar
                 {
                     mMovements.Add(new AccountMovementDTO
                     {
@@ -108,7 +108,6 @@ namespace Ej2
                     OverdraftLimit = pOverdraftLimit,
                     Client = mUnit.ClientRepository.Get(pClientId)
                 };
-                mAccount.Movements = new List<AccountMovement>();
                 mUnit.AccountRepository.Add(mAccount);
                 mUnit.ClientRepository.Get(pClientId).Accounts.Add(mAccount);
                 mUnit.Complete();
@@ -131,7 +130,8 @@ namespace Ej2
                 {
                     Description = pDescripcion,
                     Date = DateTime.Now,
-                    Amount = pAmount
+                    Amount = pAmount,
+                    Account = mAccount
                 };
                 mAccount.Movements.Add(mMovement);
                 mUnit.Complete();
@@ -147,11 +147,11 @@ namespace Ej2
             List<AccountDTO> mAccounts = new List<AccountDTO>();
             using (UnitOfWork mUnit = new UnitOfWork(new AccountManagerDbContext()))
             {
-                foreach (Account mAccount in mUnit.AccountRepository.GetOverdrawnAccounts())
+                foreach (Account mAccount in mUnit.AccountRepository.GetOverdrawnAccounts()) //cambiar
                 {
                     mAccounts.Add(new AccountDTO
                     {
-                        Balance = mAccount.GetBalance(),
+                        Balance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id),
                         Id = mAccount.Id,
                         Name = mAccount.Name,
                         OverdraftLimit = mAccount.OverdraftLimit
