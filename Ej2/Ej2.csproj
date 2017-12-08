@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\Comparer\ComparerByDateDesc.cs" />
+    <Compile Include="DAL\Comparer\ComparerDate.cs" />
     <Compile Include="DAL\EntityFramework\AccountRepository.cs" />
     <Compile Include="DAL\EntityFramework\ClientRepository.cs" />
     <Compile Include="DAL\EntityFramework\UnitOfWork.cs" />
@@ -150,5 +150,6 @@
       <DependentUpon>RealizarMovimiento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

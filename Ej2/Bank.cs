@@ -25,9 +25,10 @@ namespace Ej2
                 List<Account> mAccounts = (List<Account>)mUnit.AccountRepository.GetClientAccounts(pClientId);
                 foreach (Account mAccount in mAccounts)
                 {
+                    double mBalance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id);
                     mAccountsDTO.Add(new AccountDTO
                     {
-                        Balance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id),
+                        Balance = mBalance,
                         Id = mAccount.Id,
                         Name = mAccount.Name,
                         OverdraftLimit = mAccount.OverdraftLimit,
@@ -48,18 +49,12 @@ namespace Ej2
             List<AccountMovementDTO> mMovements = new List<AccountMovementDTO>();
             using (UnitOfWork mUnit = new UnitOfWork(new AccountManagerDbContext()))
             {
-                Account mAccount = mUnit.AccountRepository.Get(pAccountId);
-                foreach (AccountMovement mMovement in mAccount.GetAccountMovements(pCantidad)) //Cambiar
+                IEnumerator<AccountMovementDTO> mEnum = mUnit.AccountRepository.GetAccountMovements(pAccountId).GetEnumerator();
+                while (mEnum.MoveNext() && pCantidad > 0)
                 {
-                    mMovements.Add(new AccountMovementDTO
-                    {
-                        Amount = mMovement.Amount,
-                        Date = mMovement.Date,
-                        Description = mMovement.Description,
-                        Id = mMovement.Id
-                    });
+                    mMovements.Add(mEnum.Current);
+                    pCantidad--;
                 }
-                mUnit.Complete();
             }
             return mMovements;
         }
@@ -149,9 +144,10 @@ namespace Ej2
             {
                 foreach (Account mAccount in mUnit.AccountRepository.GetOverdrawnAccounts()) //cambiar
                 {
+                    double mBalance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id);
                     mAccounts.Add(new AccountDTO
                     {
-                        Balance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id),
+                        Balance = mBalance,
                         Id = mAccount.Id,
                         Name = mAccount.Name,
                         OverdraftLimit = mAccount.OverdraftLimit

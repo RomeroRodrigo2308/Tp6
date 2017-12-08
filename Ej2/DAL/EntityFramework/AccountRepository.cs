@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql;
 using MySql.Data.MySqlClient;
+using Ej2.DAL.Comparer;
 
 namespace Ej2.DAL.EntityFramework
 {
@@ -65,8 +66,20 @@ namespace Ej2.DAL.EntityFramework
 
         public IList<AccountMovementDTO> GetAccountMovements(int pAccountId)
         {
+            List<AccountMovementDTO> mListDTO = new List<AccountMovementDTO>();
             List<AccountMovement> mList = (List<AccountMovement>)ObtenerMovimientosDeUnaCuenta(pAccountId);
-            mList.Sort()
+            mList.Sort(new ComparerDate<AccountMovement>());
+            foreach (AccountMovement pMovement in mList)
+            {
+                mListDTO.Add(new AccountMovementDTO
+                {
+                    Id = pMovement.Id,
+                    Date = pMovement.Date,
+                    Amount = pMovement.Amount,
+                    Description = pMovement.Description
+                });
+            }
+            return mListDTO;
         }
     }
 }
