@@ -8,7 +8,7 @@ namespace Ej2
 {
     interface IAccountRepository<Account> : IRepository<Account>
     {
-        IEnumerable<Account> GetOverdrawnAccounts();
+        IEnumerable<AccountDTO> GetOverdrawnAccounts();
 
         IEnumerable<Account> GetClientAccounts(int pClientId);
 

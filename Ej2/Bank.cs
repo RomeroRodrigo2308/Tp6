@@ -55,6 +55,7 @@ namespace Ej2
                     mMovements.Add(mEnum.Current);
                     pCantidad--;
                 }
+                mUnit.Complete();
             }
             return mMovements;
         }
@@ -139,23 +140,13 @@ namespace Ej2
         /// <returns></returns>
         public IEnumerable<AccountDTO> GetOverdrawnAccounts()
         {
-            List<AccountDTO> mAccounts = new List<AccountDTO>();
+            List<AccountDTO> mList = new List<AccountDTO>();
             using (UnitOfWork mUnit = new UnitOfWork(new AccountManagerDbContext()))
             {
-                foreach (Account mAccount in mUnit.AccountRepository.GetOverdrawnAccounts()) //cambiar
-                {
-                    double mBalance = mUnit.AccountRepository.GetAccountBalance(mAccount.Id);
-                    mAccounts.Add(new AccountDTO
-                    {
-                        Balance = mBalance,
-                        Id = mAccount.Id,
-                        Name = mAccount.Name,
-                        OverdraftLimit = mAccount.OverdraftLimit
-                    });
-                }
+                mList = (List<AccountDTO>)mUnit.AccountRepository.GetOverdrawnAccounts();
                 mUnit.Complete();
             }
-            return mAccounts;
+            return mList;
         }
 
         /// <summary>

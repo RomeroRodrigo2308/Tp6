@@ -25,7 +25,9 @@ namespace Ej2.GUIs
         {
             BindingSource mSource = new BindingSource();
 
-            foreach (AccountDTO mAccount in iBank.GetOverdrawnAccounts())
+            List<AccountDTO> mOverdrwanAccountList = (List<AccountDTO>)iBank.GetOverdrawnAccounts();
+
+            foreach (AccountDTO mAccount in mOverdrwanAccountList)
             {
                 mSource.Add(mAccount);
             }

@@ -18,18 +18,27 @@ namespace Ej2.DAL.EntityFramework
         /// Devuelve todas las cuentas cuyo balance sea negativo y que hayan sobrepasado su limite de descubierto
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Account> GetOverdrawnAccounts()
+        public IEnumerable<AccountDTO> GetOverdrawnAccounts()
         {
-            List<Account> mList = new List<Account>();
-            foreach (Account mAccount in iDbContext.Accounts)
+            List<AccountDTO> mListDTO = new List<AccountDTO>();
+            var query = from p in iDbContext.Accounts
+                        select p;
+            List<Account> mList = query.ToList();
+            foreach (Account mAccount in mList)
             {
-                Double mBalance = GetAccountBalance(mAccount.Id);
+                double mBalance = GetAccountBalance(mAccount.Id);
                 if (mBalance < 0 && Math.Abs(mBalance) > mAccount.OverdraftLimit)
                 {
-                    mList.Add(mAccount);
+                    mListDTO.Add(new AccountDTO
+                    {
+                        Balance = mBalance,
+                        Id = mAccount.Id,
+                        Name = mAccount.Name,
+                        OverdraftLimit = mAccount.OverdraftLimit,
+                    });
                 }
             }
-            return mList;
+            return mListDTO;
         }
 
         /// <summary>
@@ -50,7 +59,7 @@ namespace Ej2.DAL.EntityFramework
             var query = from p in iDbContext.Set<AccountMovement>()
                         where p.Account.Id == pAccountId
                         select p;
-            return query.ToList<AccountMovement>();
+            return query.ToList();
         }
 
         /// <summary>
@@ -61,7 +70,7 @@ namespace Ej2.DAL.EntityFramework
         public double GetAccountBalance(int pAccountId)
         {
             List<AccountMovement> mList = (List<AccountMovement>)ObtenerMovimientosDeUnaCuenta(pAccountId);
-            return mList.Sum<AccountMovement>(p => p.Amount);
+            return mList.Sum(p => p.Amount);
         }
 
         public IList<AccountMovementDTO> GetAccountMovements(int pAccountId)

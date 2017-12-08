@@ -10,7 +10,7 @@ namespace Ej2.DAL.Comparer
     {
         public int Compare(AccountMovement pMov1, AccountMovement pMov2)
         {
-            return DateTime.Compare(pMov1.Date, pMov2.Date);
+            return DateTime.Compare(pMov1.Date, pMov2.Date) * -1;
         }
     }
 }
