@@ -35,6 +35,7 @@ namespace Ej2.GUIs
             dataGridView1.DataSource = mSource;
 
             dataGridView1.AutoGenerateColumns = true;
+            dataGridView1.AutoSize = true;
 
             dataGridView1.Refresh();
         }

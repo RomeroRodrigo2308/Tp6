@@ -73,6 +73,11 @@ namespace Ej2.DAL.EntityFramework
             return mList.Sum(p => p.Amount);
         }
 
+        /// <summary>
+        /// Devuelve una lista con los datos de todos los movimientos realizados por una cuenta
+        /// </summary>
+        /// <param name="pAccountId"></param>
+        /// <returns></returns>
         public IList<AccountMovementDTO> GetAccountMovements(int pAccountId)
         {
             List<AccountMovementDTO> mListDTO = new List<AccountMovementDTO>();
